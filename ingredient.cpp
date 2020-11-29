@@ -1,4 +1,6 @@
 #include "ingredient.h"
+#include <list>
+
 Ingredient::Ingredient(string name, string duedate, string kind, int quantity,
                        string location) {
     set_ingredient_name(name);
