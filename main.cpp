@@ -1,15 +1,15 @@
 
-#include "cook.h"
-#include "ingredient.h"
-#include "recipe.h"
-#include "show.h"
+#include "cook.hpp"
+#include "ingredient.hpp"
+#include "recipe.hpp"
+#include "show.hpp"
 #include <iostream>
 
 using namespace std;
-list<Ingredient> ingredient_list;
-list<Recipe> recipe_list;
-list<Ingredient>::iterator it_ing;
-list<Recipe>::iterator it_rec;
+// list<ingred> ingredient_list;
+// list<Recipe> recipe_list;
+// list<ingred>::iterator it_ing;
+// list<Recipe>::iterator it_rec;
 int main() {
 
     show_main();
