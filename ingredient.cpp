@@ -1,5 +1,5 @@
 #include "ingredient.hpp"
-#include <list>
+
 ingred::ingred() {
     ingredient_name = "없음";
     ingredient_duedate = 0;

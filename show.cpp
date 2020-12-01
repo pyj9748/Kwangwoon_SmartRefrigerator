@@ -6,7 +6,6 @@
 #include <iostream>
 #include <iterator>
 #include <stdlib.h>
-#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -58,14 +57,16 @@ void show_1(list<ingred> &ingredient_list) {
         getchar();
         cout << "재료 종류 입력 (예: 야채): ";
         getline(cin, kind);
-        cout << "재료 위치 입력 (1~3): ";
+        cout << "재료 위치 입력 (0: 실온, 1~3: 냉장실, 4: 냉동실): ";
         cin >> location;
         cout << "재료 수량 입력 (정수 입력): ";
         cin >> quantity;
 
         ingred ingredient(name, date, kind, quantity, location);
         ingredient_list.push_back(ingredient);
+        printf("%c[32m", 27);
         cout << "\n재료가 추가 되었습니다." << endl;
+        printf("%c[0m", 27);
         cout << "----------------------------------------------------------"
              << endl;
         cout << "0. 메인메뉴로 돌아가기" << endl;
@@ -79,7 +80,9 @@ void show_1(list<ingred> &ingredient_list) {
             else if (menu == 1)
                 break;
             else {
+                printf("%c[31m", 27);
                 cout << "0~1 사이의 번호를 입력해 주세요: ";
+                printf("%c[0m", 27);
                 continue;
             }
         }
@@ -112,9 +115,13 @@ void show_2(list<ingred> &ingredient_list) {
         }
 
         if (result == true) {
+            printf("%c[32m", 27);
             cout << name << "이(가) 삭제되었습니다." << endl;
+            printf("%c[0m", 27);
         } else {
+            printf("%c[31m", 27);
             cout << name << "을(를) 찾지 못했습니다." << endl;
+            printf("%c[0m", 27);
         }
         cout << "----------------------------------------------------------"
              << endl;
@@ -129,7 +136,9 @@ void show_2(list<ingred> &ingredient_list) {
             else if (menu == 1)
                 break;
             else {
+                printf("%c[31m", 27);
                 cout << "0~1 사이의 번호를 입력해 주세요: ";
+                printf("%c[0m", 27);
                 continue;
             }
         }
@@ -142,9 +151,9 @@ void show_3(list<Recipe> &recipe_list) {
     int i = 1;
     int menu = 0;
 
-    string name;          //이름
-    list<string> content; //내용
-    list<string> list;    // 재료 (linked list)
+    string name;                //이름
+    vector<string> contents;    //내용
+    vector<string> ingredients; // 재료 (linked list)
     string ingredient;
     string step;
     string difficulty; // 난이도
@@ -158,11 +167,11 @@ void show_3(list<Recipe> &recipe_list) {
         cout << "\n요리 순서 입력 (\'완성\' 입력 시 종료): " << endl;
 
         i = 1;
-        content.clear();
+        contents.clear();
         while (true) {
             cout << "[" << i << "] ";
             getline(cin, step);
-            content.push_back(step);
+            contents.push_back(step);
             if (step == "완성") {
                 break;
             } else {
@@ -172,13 +181,13 @@ void show_3(list<Recipe> &recipe_list) {
         }
 
         cout << "\n요리 재료 입력 (예: 계란) ('0' 입력 시 종료): " << endl;
-        list.clear();
+        ingredients.clear();
         while (true) {
             getline(cin, ingredient);
             if (ingredient == "0") {
                 break;
             } else {
-                list.push_back(ingredient);
+                ingredients.push_back(ingredient);
                 continue;
             }
         }
@@ -187,10 +196,12 @@ void show_3(list<Recipe> &recipe_list) {
         getline(cin, difficulty);
         cout << "\n요리 시간 입력 (분 단위 정수 입력) (예: 35): ";
         cin >> time;
-        Recipe recipe(name, content, list, difficulty, time);
+        Recipe recipe(name, contents, ingredients, difficulty, time);
         recipe_list.push_back(recipe);
 
+        printf("%c[32m", 27);
         cout << "\n요리가 추가 되었습니다." << endl;
+        printf("%c[0m", 27);
         cout << "----------------------------------------------------------"
              << endl;
         cout << "0. 메인메뉴로 돌아가기" << endl;
@@ -204,7 +215,9 @@ void show_3(list<Recipe> &recipe_list) {
             else if (menu == 1)
                 break;
             else {
+                printf("%c[31m", 27);
                 cout << "0~1 사이의 번호를 입력해 주세요: ";
+                printf("%c[0m", 27);
                 continue;
             }
         }
@@ -236,9 +249,13 @@ void show_4(list<Recipe> &recipe_list) {
         }
 
         if (result == true) {
+            printf("%c[32m", 27);
             cout << name << "이(가) 삭제되었습니다." << endl;
+            printf("%c[0m", 27);
         } else {
+            printf("%c[31m", 27);
             cout << name << "을(를) 찾지 못했습니다." << endl;
+            printf("%c[0m", 27);
         }
         cout << "----------------------------------------------------------"
              << endl;
@@ -253,7 +270,9 @@ void show_4(list<Recipe> &recipe_list) {
             else if (menu == 1)
                 break;
             else {
+                printf("%c[31m", 27);
                 cout << "0~1 사이의 번호를 입력해 주세요: ";
+                printf("%c[0m", 27);
                 continue;
             }
         }
@@ -284,10 +303,22 @@ void show_5(list<ingred> &ingredient_list) {
         cout << "----------------------------------------------------------"
              << endl;
     } else {
-        for (int i = 1; i <= 3; ++i) {
+        for (int i = 0; i <= 4; ++i) {
             cout << "----------------------------------------------------------"
                  << endl;
-            cout << i << "층" << endl;
+            if (i == 0) {
+                printf("%c[33m", 27);
+                cout << "실온" << endl;
+                printf("%c[0m", 27);
+            } else if (i == 4) {
+                printf("%c[36m", 27);
+                cout << "냉동실 " << endl;
+                printf("%c[0m", 27);
+            } else {
+                printf("%c[34m", 27);
+                cout << "냉장실 " << i << "층" << endl;
+                printf("%c[0m", 27);
+            }
 
             for (it_ing = ingredient_list.begin();
                  it_ing != ingredient_list.end(); it_ing++) {
@@ -302,7 +333,9 @@ void show_5(list<ingred> &ingredient_list) {
                          << " / "
                          << "유통기한 : " << contact_1.get_ingredient_duedate();
                     if ((contact_1.get_ingredient_duedate() - t) < 0) {
+                        printf("%c[31m", 27);
                         cout << " (유통기한 지남!!!)";
+                        printf("%c[0m", 27);
                     }
                     cout << endl;
                 }
@@ -326,7 +359,7 @@ void show_6(list<Recipe> &recipe_list) {
     int i = 1, j = 1;
     int menu = 0;
 
-    list<string>::iterator it;
+    vector<string>::iterator it;
     list<Recipe>::iterator it_rec = recipe_list.begin();
 
     while (true) {
@@ -347,8 +380,8 @@ void show_6(list<Recipe> &recipe_list) {
 
             j = 1;
             Recipe &contact = *it_rec;
-            list<string> contents = contact.get_recipe_content();
-            list<string> ingredients = contact.get_recipe_ingredient();
+            vector<string> contents = contact.get_recipe_content();
+            vector<string> ingredients = contact.get_recipe_ingredient();
             cout << i << "번 요리 - " << contact.get_recipe_name() << endl;
             cout << "\n요리 순서: " << endl;
             for (it = contents.begin(); it != contents.end(); ++it) {
@@ -388,29 +421,34 @@ void show_6(list<Recipe> &recipe_list) {
                     ++i;
                 break;
             } else {
+                printf("%c[31m", 27);
                 cout << "0~2 사이의 번호를 입력해 주세요: ";
+                printf("%c[0m", 27);
                 continue;
             }
         }
     }
 }
 
-void show_7() { // 민수님
-    int n;
+void show_7(const list<ingred> &ingredient_list,
+            const list<Recipe> &recipe_list) {
+    int n = 0;
+
+    Cook cook(ingredient_list, recipe_list);
+    cook.arrange_recipes();
+
+    vector<Recipe> cookable = cook.get_cookable();
+    vector<Recipe> uncookable = cook.get_uncookable();
 
     clear();
-    cout << "메인메뉴로 돌아가기 입력 0" << endl;
+    cout << "cookable" << endl;
+    for (int i = 0; i < cookable.size(); ++i)
+        cout << cookable[i].get_recipe_name() << endl;
+    cout << "uncookable" << endl;
+    for (int i = 0; i < uncookable.size(); ++i)
+        cout << uncookable[i].get_recipe_name() << endl;
+
     cin >> n;
-    while (1) {
 
-        if (n == 0) {
-            show_main();
-
-        } else {
-            cout << "메인메뉴로 돌아가기 입력 0:" << endl;
-            cin >> n;
-            continue;
-        }
-    }
     return;
 }

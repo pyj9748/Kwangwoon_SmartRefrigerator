@@ -1,9 +1,8 @@
 #ifndef __INGREDIENT_H__
 #define __INGREDIENT_H__
-#include <iostream>
-#include <iterator>
-#include <list>
+
 #include <string>
+
 using namespace std;
 
 class ingred {

@@ -1,9 +1,4 @@
-#include "cook.hpp"
-#include "ingredient.hpp"
-#include "recipe.hpp"
 #include "show.hpp"
-#include <iostream>
-#include <list>
 
 using namespace std;
 
@@ -36,6 +31,7 @@ int main() {
             show_6(recipe_list);
             break;
         case 7:
+            show_7(ingredient_list, recipe_list);
             break;
         case 8:
             clear();
