@@ -1,6 +1,6 @@
 #ifndef __SHOW_H__
 #define __SHOW_H__
-#include "ingredient.hpp"
+
 #include "recipe.hpp"
 
 // 화면지우기

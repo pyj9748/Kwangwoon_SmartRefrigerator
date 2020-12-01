@@ -1,9 +1,8 @@
 #ifndef __RECIPE_H__
 #define __RECIPE_H__
+
 #include "ingredient.hpp"
-#include <iostream>
 #include <list>
-#include <string>
 
 using namespace std;
 

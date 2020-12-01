@@ -1,6 +1,5 @@
 #include "recipe.hpp"
-#include <list>
-#include <string>
+
 Recipe::Recipe() {}
 Recipe::Recipe(string name, list<string> content,
                list<string> list_for_ingerdient, string difficulty, int time) {
