@@ -1,5 +1,6 @@
 #include "show.hpp"
 #include "cook.hpp"
+#include <cstdio>
 #include <ctime>
 #include <fcntl.h>
 #include <iostream>
