@@ -2,32 +2,34 @@
 #define __RECIPE_H__
 
 #include "ingredient.hpp"
-#include <list>
+#include <vector>
 
 using namespace std;
 
 class Recipe {
   public:
     Recipe();
-    Recipe(string name, list<string> content, list<string> list_for_ingerdient,
-           string difficulty, int time);
+    Recipe(string name, vector<string> content,
+           vector<string> list_for_ingerdient, string difficulty, int time);
     string get_recipe_name();
-    list<string> get_recipe_content();
-    list<string> get_recipe_ingredient();
+    vector<string> get_recipe_content();
+    vector<string> get_recipe_ingredient();
     string get_recipe_difficulty();
     int get_recipe_time();
 
     void set_recipe_name(string str);
-    void set_recipe_content(list<string> str);
-    void set_recipe_ingredient(list<string> list);
+    void set_recipe_content(vector<string> str);
+    void set_recipe_ingredient(vector<string> list);
     void set_recipe_difficulty(string str);
     void set_recipe_time(int n);
 
+    vector<string> lacking_ingredients; // 부족한 재료
+
   private:
-    string recipe_name;                  //이름
-    list<string> recipe_content;         //내용
-    list<string> recipe_ingredient_list; // 재료 (linked list)
-    string recipe_difficulty;            // 난이도
-    int recipe_time;                     //조리 시간
+    string recipe_name;                    // 이름
+    vector<string> recipe_content;         // 내용
+    vector<string> recipe_ingredient_list; // 필요한 재료
+    string recipe_difficulty;              // 난이도
+    int recipe_time;                       // 조리 시간
 };
 #endif

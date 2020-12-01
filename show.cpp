@@ -151,9 +151,9 @@ void show_3(list<Recipe> &recipe_list) {
     int i = 1;
     int menu = 0;
 
-    string name;          //이름
-    list<string> content; //내용
-    list<string> list;    // 재료 (linked list)
+    string name;                //이름
+    vector<string> contents;    //내용
+    vector<string> ingredients; // 재료 (linked list)
     string ingredient;
     string step;
     string difficulty; // 난이도
@@ -167,11 +167,11 @@ void show_3(list<Recipe> &recipe_list) {
         cout << "\n요리 순서 입력 (\'완성\' 입력 시 종료): " << endl;
 
         i = 1;
-        content.clear();
+        contents.clear();
         while (true) {
             cout << "[" << i << "] ";
             getline(cin, step);
-            content.push_back(step);
+            contents.push_back(step);
             if (step == "완성") {
                 break;
             } else {
@@ -181,13 +181,13 @@ void show_3(list<Recipe> &recipe_list) {
         }
 
         cout << "\n요리 재료 입력 (예: 계란) ('0' 입력 시 종료): " << endl;
-        list.clear();
+        ingredients.clear();
         while (true) {
             getline(cin, ingredient);
             if (ingredient == "0") {
                 break;
             } else {
-                list.push_back(ingredient);
+                ingredients.push_back(ingredient);
                 continue;
             }
         }
@@ -196,7 +196,7 @@ void show_3(list<Recipe> &recipe_list) {
         getline(cin, difficulty);
         cout << "\n요리 시간 입력 (분 단위 정수 입력) (예: 35): ";
         cin >> time;
-        Recipe recipe(name, content, list, difficulty, time);
+        Recipe recipe(name, contents, ingredients, difficulty, time);
         recipe_list.push_back(recipe);
 
         printf("%c[32m", 27);
@@ -359,7 +359,7 @@ void show_6(list<Recipe> &recipe_list) {
     int i = 1, j = 1;
     int menu = 0;
 
-    list<string>::iterator it;
+    vector<string>::iterator it;
     list<Recipe>::iterator it_rec = recipe_list.begin();
 
     while (true) {
@@ -380,8 +380,8 @@ void show_6(list<Recipe> &recipe_list) {
 
             j = 1;
             Recipe &contact = *it_rec;
-            list<string> contents = contact.get_recipe_content();
-            list<string> ingredients = contact.get_recipe_ingredient();
+            vector<string> contents = contact.get_recipe_content();
+            vector<string> ingredients = contact.get_recipe_ingredient();
             cout << i << "번 요리 - " << contact.get_recipe_name() << endl;
             cout << "\n요리 순서: " << endl;
             for (it = contents.begin(); it != contents.end(); ++it) {
@@ -430,4 +430,25 @@ void show_6(list<Recipe> &recipe_list) {
     }
 }
 
-void show_7() {}
+void show_7(const list<ingred> &ingredient_list,
+            const list<Recipe> &recipe_list) {
+    int n = 0;
+
+    Cook cook(ingredient_list, recipe_list);
+    cook.arrange_recipes();
+
+    vector<Recipe> cookable = cook.get_cookable();
+    vector<Recipe> uncookable = cook.get_uncookable();
+
+    clear();
+    cout << "cookable" << endl;
+    for (int i = 0; i < cookable.size(); ++i)
+        cout << cookable[i].get_recipe_name() << endl;
+    cout << "uncookable" << endl;
+    for (int i = 0; i < uncookable.size(); ++i)
+        cout << uncookable[i].get_recipe_name() << endl;
+
+    cin >> n;
+
+    return;
+}
