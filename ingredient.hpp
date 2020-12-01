@@ -1,6 +1,7 @@
 #ifndef __INGREDIENT_H__
 #define __INGREDIENT_H__
 #include <iostream>
+#include <iterator>
 #include <list>
 #include <string>
 using namespace std;
@@ -29,4 +30,5 @@ class ingred {
     int ingredient_quantity; // 수량
     int ingredient_location; //위치
 };
+
 #endif
