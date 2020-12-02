@@ -292,65 +292,101 @@ void show_5(list<ingred> &ingredient_list) {
     t += curr_tm->tm_mday;
 
     list<ingred>::iterator it_ing;
+  
+	while (true) {
+		clear();
+		cout << "5. 재료 보기\n" << endl;
+		if (ingredient_list.empty()) {
+			cout << "----------------------------------------------------------"
+				<< endl;
+			cout << "냉장고가 비었습니다." << endl;
+			cout << "재료를 추가해주세요. (메뉴 1번)" << endl;
+			cout << "----------------------------------------------------------"
+				<< endl;
 
-    clear();
-    cout << "5. 재료 보기\n" << endl;
-    if (ingredient_list.empty()) {
-        cout << "----------------------------------------------------------"
-             << endl;
-        cout << "냉장고가 비었습니다." << endl;
-        cout << "재료를 추가해주세요. (메뉴 1번)" << endl;
-        cout << "----------------------------------------------------------"
-             << endl;
-    } else {
-        for (int i = 0; i <= 4; ++i) {
-            cout << "----------------------------------------------------------"
-                 << endl;
-            if (i == 0) {
-                printf("%c[33m", 27);
-                cout << "실온" << endl;
-                printf("%c[0m", 27);
-            } else if (i == 4) {
-                printf("%c[36m", 27);
-                cout << "냉동실 " << endl;
-                printf("%c[0m", 27);
-            } else {
-                printf("%c[34m", 27);
-                cout << "냉장실 " << i << "층" << endl;
-                printf("%c[0m", 27);
-            }
+			cout << "메인메뉴로 돌아가려면 0을 입력하세요: " << endl;
+			cin >> n;
+			do {
+				printf("%c[31m", 27);
+				cout << "메인메뉴로 돌아가려면 0을 입력하세요: ";
+				printf("%c[0m", 27);
+				cin >> n;
+				continue;
+			} while (n != 0);
 
-            for (it_ing = ingredient_list.begin();
-                 it_ing != ingredient_list.end(); it_ing++) {
-                ingred &contact_1 = *it_ing;
+			return;
 
-                if (contact_1.get_ingredient_location() == i) {
-                    cout << "이름 : " << contact_1.get_ingredient_name()
-                         << " / "
-                         << "종류 : " << contact_1.get_ingredient_kind()
-                         << " / "
-                         << "개수 : " << contact_1.get_ingredient_quantity()
-                         << " / "
-                         << "유통기한 : " << contact_1.get_ingredient_duedate();
-                    if ((contact_1.get_ingredient_duedate() - t) < 0) {
-                        printf("%c[31m", 27);
-                        cout << " (유통기한 지남!!!)";
-                        printf("%c[0m", 27);
-                    }
-                    cout << endl;
-                }
-            }
-        }
-        cout << "----------------------------------------------------------"
-             << endl;
-    }
+		} else {
+			for (int i = 0; i <= 4; ++i) {
+				cout << "----------------------------------------------------------"
+					<< endl;
+				if (i == 0) {
+					printf("%c[33m", 27);
+					cout << "실온" << endl;
+					printf("%c[0m", 27);
+				}
+				else if (i == 4) {
+					printf("%c[36m", 27);
+					cout << "냉동실 " << endl;
+					printf("%c[0m", 27);
+				}
+				else {
+					printf("%c[34m", 27);
+					cout << "냉장실 " << i << "층" << endl;
+					printf("%c[0m", 27);
+				}
 
-    do {
-        cout << "메인메뉴로 돌아가려면 0을 입력하세요 : ";
-        cin >> n;
-    } while (n != 0);
+				for (it_ing = ingredient_list.begin();
+					it_ing != ingredient_list.end(); it_ing++) {
+					ingred &contact_1 = *it_ing;
 
-    return;
+					if (contact_1.get_ingredient_location() == i) {
+						cout << "이름 : " << contact_1.get_ingredient_name()
+							<< " / "
+							<< "종류 : " << contact_1.get_ingredient_kind()
+							<< " / "
+							<< "개수 : " << contact_1.get_ingredient_quantity()
+							<< " / "
+							<< "유통기한 : "
+							<< contact_1.get_ingredient_duedate();
+						if ((contact_1.get_ingredient_duedate() - t) < 0) {
+							printf("%c[31m", 27);
+							cout << " (유통기한 지남!!!)";
+							contact_1.set_ingredient_checkdue(1);
+							printf("%c[0m", 27);
+						}
+						cout << endl;
+					}
+				}
+			}
+			cout << "----------------------------------------------------------"
+				<< endl;
+			int num = 0;
+
+			while (true) {
+				cout << "0. 메인메뉴로 돌아가기" << endl;
+				cout << "1. 유통기한 지난 재료 삭제하기" << endl;
+				cout << "\n번호를 입력하세요(0~1) : ";
+				cin >> n;
+
+				if (n == 0)
+					return;
+				else if (n == 1) {
+					for (it_ing = ingredient_list.begin();
+						it_ing != ingredient_list.end(); it_ing++) {
+						ingred &contact_1 = *it_ing;
+
+						if (contact_1.get_ingredient_checkdue() == 1) {
+							it_ing = ingredient_list.erase(it_ing);
+						}
+						else
+							true;
+					}
+					break;
+				}
+			}
+		}
+	}
 }
 
 // 요리보기
