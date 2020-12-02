@@ -6,7 +6,7 @@ ingred::ingred() {
     ingredient_kind = "없음";
     ingredient_quantity = 0;
     ingredient_location = 0;
-	ingredient_checkdue = 0;
+    ingredient_checkdue = 0;
 }
 ingred::ingred(string name, int date, string kind, int quantity, int location) {
     ingredient_name = name;
@@ -14,7 +14,7 @@ ingred::ingred(string name, int date, string kind, int quantity, int location) {
     ingredient_kind = kind;
     ingredient_quantity = quantity;
     ingredient_location = location;
-	ingredient_checkdue = 0;
+    ingredient_checkdue = 0;
 }
 
 string ingred::get_ingredient_name() { return ingredient_name; }

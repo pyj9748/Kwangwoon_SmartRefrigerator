@@ -316,8 +316,7 @@ void show_5(list<ingred> &ingredient_list) {
 
 			return;
 
-		}
-		else {
+		} else {
 			for (int i = 0; i <= 4; ++i) {
 				cout << "----------------------------------------------------------"
 					<< endl;
@@ -348,10 +347,12 @@ void show_5(list<ingred> &ingredient_list) {
 							<< " / "
 							<< "개수 : " << contact_1.get_ingredient_quantity()
 							<< " / "
-							<< "유통기한 : " << contact_1.get_ingredient_duedate();
+							<< "유통기한 : "
+							<< contact_1.get_ingredient_duedate();
 						if ((contact_1.get_ingredient_duedate() - t) < 0) {
 							printf("%c[31m", 27);
 							cout << " (유통기한 지남!!!)";
+							contact_1.set_ingredient_checkdue(1);
 							printf("%c[0m", 27);
 						}
 						cout << endl;
@@ -360,7 +361,6 @@ void show_5(list<ingred> &ingredient_list) {
 			}
 			cout << "----------------------------------------------------------"
 				<< endl;
-
 			int num = 0;
 
 			while (true) {
