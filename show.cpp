@@ -430,9 +430,10 @@ void show_6(list<Recipe> &recipe_list) {
     }
 }
 
-void show_7(const list<ingred> &ingredient_list,
-            const list<Recipe> &recipe_list) {
+void show_7(list<ingred> &ingredient_list, const list<Recipe> &recipe_list) {
     int n = 0;
+    int i = 1;
+    char answer = 0;
 
     Cook cook(ingredient_list, recipe_list);
     cook.arrange_recipes();
@@ -441,14 +442,78 @@ void show_7(const list<ingred> &ingredient_list,
     vector<Recipe> uncookable = cook.get_uncookable();
 
     clear();
-    cout << "cookable" << endl;
+    cout << "7. 요리 하기\n" << endl;
+    cout << "----------------------------------------------------------"
+         << endl;
+    cout << "[0] 메인메뉴로 돌아가기" << endl;
+    printf("%c[32m", 27);
     for (int i = 0; i < cookable.size(); ++i)
-        cout << cookable[i].get_recipe_name() << endl;
-    cout << "uncookable" << endl;
+        cout << "[" << i + 1 << "] " << cookable[i].get_recipe_name() << endl;
+    printf("%c[31m", 27);
     for (int i = 0; i < uncookable.size(); ++i)
-        cout << uncookable[i].get_recipe_name() << endl;
+        cout << "[" << i + cookable.size() + 1 << "] "
+             << uncookable[i].get_recipe_name() << " (재료 부족!)" << endl;
+    printf("%c[0m", 27);
+    cout << "----------------------------------------------------------"
+         << endl;
+    cout << "요리를 선택하세요. (번호 입력): ";
+    while (true) {
+        cin >> n;
+        if (n == 0)
+            return;
+        else if (n < 0 || n > recipe_list.size()) {
+            printf("%c[31m", 27);
+            cout << "유효하지 않은 입력입니다. 다시 입력해 주세요: ";
+            printf("%c[0m", 27);
+            continue;
+        } else if (cookable.size() < n) {
+            n -= cookable.size() + 1;
+            printf("%c[31m", 27);
+            cout << "재료가 부족해 요리를 할 수 없습니다." << endl;
+            cout << "부족한 재료: ";
+            for (int i = 0; i < uncookable[n].lacking_ingredients.size(); ++i)
+                cout << uncookable[n].lacking_ingredients[i] << " ";
+            printf("%c[0m", 27);
+            cout << "\n다른 요리를 선택해 주세요: ";
+            continue;
+        } else
+            break;
+    }
+    Recipe cooking = cookable[n - 1];
+    vector<string> ingredients = cooking.get_recipe_ingredient();
+    vector<string> contents = cooking.get_recipe_content();
+    vector<string>::iterator iter;
 
-    cin >> n;
-
-    return;
+    clear();
+    cout << "7. 요리 하기\n" << endl;
+    cout << "----------------------------------------------------------"
+         << endl;
+    cout << cooking.get_recipe_name() << endl;
+    cout << "\n요리 순서: " << endl;
+    for (iter = contents.begin(); iter != contents.end(); ++iter) {
+        cout << "[" << i++ << "] " << *iter << endl;
+    }
+    cout << "\n재료: ";
+    for (iter = ingredients.begin(); iter != ingredients.end(); ++iter) {
+        cout << *iter << " ";
+    }
+    cout << "\n\n난이도: " << cooking.get_recipe_difficulty() << endl;
+    cout << "\n요리 시간: " << cooking.get_recipe_time() << "분" << endl;
+    cout << "----------------------------------------------------------"
+         << endl;
+    cout << "요리 하시겠습니까? (Y/N): ";
+    while (true) {
+        cin >> answer;
+        if (answer == 'y' || answer == 'Y') {
+            use_ingredients(ingredients, ingredient_list);
+            return;
+        } else if (answer == 'n' || answer == 'N')
+            return;
+        else {
+            printf("%c[31m", 27);
+            cout << "유효하지 않은 입력입니다. 다시 입력해 주세요: ";
+            printf("%c[0m", 27);
+            continue;
+        }
+    }
 }

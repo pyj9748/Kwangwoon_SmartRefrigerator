@@ -24,5 +24,6 @@ class Cook {
 };
 
 bool is_lack(const string &target, list<ingred> ingredients);
+void use_ingredients(vector<string> using_ingreds, list<ingred> &ingreds);
 
 #endif

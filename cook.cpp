@@ -55,3 +55,28 @@ bool is_lack(const string &target, list<ingred> ingredients) {
     }
     return true;
 }
+
+void use_ingredients(vector<string> using_ingreds, list<ingred> &ingreds) {
+    vector<string>::iterator it_use;
+    list<ingred>::iterator it_ingred;
+    string using_ingred;
+    ingred modifying;
+
+    for (it_use = using_ingreds.begin(); it_use != using_ingreds.end();
+         ++it_use) {
+        using_ingred = *it_use;
+        for (it_ingred = ingreds.begin(); it_ingred != ingreds.end();
+             ++it_ingred) {
+            modifying = *it_ingred;
+            if (modifying.get_ingredient_name() == using_ingred)
+                break;
+        }
+        ingreds.erase(it_ingred);
+        modifying.set_ingredient_quantity(modifying.get_ingredient_quantity() -
+                                          1);
+        if (modifying.get_ingredient_quantity() > 0)
+            ingreds.push_back(modifying);
+    }
+
+    return;
+}
