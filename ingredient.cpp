@@ -24,6 +24,7 @@ int ingred::get_ingredient_location() { return ingredient_location; }
 int ingred::get_ingredient_quantity() { return ingredient_quantity; }
 int ingred::get_ingredient_checkdue() { return ingredient_checkdue; }
 
+
 void ingred::set_ingredient_name(string name) { ingredient_name = name; }
 void ingred::set_ingredient_duedate(int duedate) {
     ingredient_duedate = duedate;

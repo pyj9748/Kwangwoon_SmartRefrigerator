@@ -292,7 +292,7 @@ void show_5(list<ingred> &ingredient_list) {
     t += curr_tm->tm_mday;
 
     list<ingred>::iterator it_ing;
-
+  
 	while (true) {
 		clear();
 		cout << "5. 재료 보기\n" << endl;
