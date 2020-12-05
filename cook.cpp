@@ -3,13 +3,13 @@
 
 Cook::Cook(){};
 
-Cook::Cook(const list<ingred> &ingredient_list,
+Cook::Cook(const list<Ingredient> &ingredient_list,
            const list<Recipe> &recipe_list) {
     ingredients = ingredient_list;
     entire_recipes = recipe_list;
 }
 
-void Cook::set_ingredients(const list<ingred> &ingredient_list) {
+void Cook::set_ingredients(const list<Ingredient> &ingredient_list) {
     ingredients = ingredient_list;
 }
 
@@ -31,10 +31,10 @@ void Cook::arrange_recipes() {
         for (it_ingred = ingreds.begin(); it_ingred != ingreds.end();
              ++it_ingred) {
             if (is_lack(*it_ingred, ingredients))
-                recipe.lacking_ingredients.push_back(*it_ingred);
+                recipe.get_lacking_ingredients().push_back(*it_ingred);
         }
 
-        if (recipe.lacking_ingredients.size() == 0)
+        if (recipe.get_lacking_ingredients().size() == 0)
             cookable_recipes.push_back(recipe);
         else
             uncookable_recipes.push_back(recipe);
@@ -46,8 +46,8 @@ void Cook::arrange_recipes() {
 vector<Recipe> Cook::get_cookable() { return cookable_recipes; }
 vector<Recipe> Cook::get_uncookable() { return uncookable_recipes; }
 
-bool is_lack(const string &target, list<ingred> ingredients) {
-    list<ingred>::iterator iter;
+bool is_lack(const string &target, list<Ingredient> ingredients) {
+    list<Ingredient>::iterator iter;
     for (iter = ingredients.begin(); iter != ingredients.end(); ++iter) {
         if (iter->get_ingredient_name() == target)
             return false;
@@ -55,25 +55,24 @@ bool is_lack(const string &target, list<ingred> ingredients) {
     return true;
 }
 
-void use_ingredients(vector<string> using_ingreds, list<ingred> &ingreds) {
+void use_ingredients(vector<string> using_ingreds, list<Ingredient> &ingreds) {
     vector<string>::iterator it_use;
-    list<ingred>::iterator it_ingred;
+    list<Ingredient>::iterator it_ingred;
     string using_ingred;
-    ingred modifying;
+    Ingredient *ingredient;
 
     for (it_use = using_ingreds.begin(); it_use != using_ingreds.end();
          ++it_use) {
         for (it_ingred = ingreds.begin(); it_ingred != ingreds.end();
              ++it_ingred) {
-            modifying = *it_ingred;
-            if (modifying.get_ingredient_name() == *it_use)
+            ingredient = &(*it_ingred);
+            if (ingredient->get_ingredient_name() == *it_use)
                 break;
         }
-        ingreds.erase(it_ingred);
-        modifying.set_ingredient_quantity(modifying.get_ingredient_quantity() -
-                                          1);
-        if (modifying.get_ingredient_quantity() > 0)
-            ingreds.push_back(modifying);
+        ingredient->set_ingredient_quantity(
+            ingredient->get_ingredient_quantity() - 1);
+        if (ingredient->get_ingredient_quantity() <= 0)
+            ingreds.erase(it_ingred);
     }
 
     return;

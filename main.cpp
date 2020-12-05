@@ -12,11 +12,13 @@
 
 using namespace std;
 
-void data_load(list<ingred> &ingredient_list, list<Recipe> &recipe_list);
-void data_save(list<ingred> ingredient_list, list<Recipe> recipe_list);
+// 데이터 불러오기
+void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list);
+// 데이터 저장
+void data_save(list<Ingredient> ingredient_list, list<Recipe> recipe_list);
 
 int main() {
-    list<ingred> ingredient_list;
+    list<Ingredient> ingredient_list;
     list<Recipe> recipe_list;
 
     data_load(ingredient_list, recipe_list);
@@ -27,28 +29,28 @@ int main() {
         menu = show_main();
 
         switch (menu) {
-        case 1:
+        case 1: // 재료 추가
             show_1(ingredient_list);
             break;
-        case 2:
+        case 2: // 재료 삭제
             show_2(ingredient_list);
             break;
-        case 3:
+        case 3: // 레시피 추가
             show_3(recipe_list);
             break;
-        case 4:
+        case 4: // 레시피 삭제
             show_4(recipe_list);
             break;
-        case 5:
+        case 5: // 재료 보기
             show_5(ingredient_list);
             break;
-        case 6:
+        case 6: // 레시피 보기
             show_6(recipe_list);
             break;
-        case 7:
+        case 7: // 요리하기
             show_7(ingredient_list, recipe_list);
             break;
-        case 8:
+        case 8: // 프로그램 종료
             clear();
             data_save(ingredient_list, recipe_list);
             return 0;
@@ -58,14 +60,15 @@ int main() {
     }
 }
 
-void data_load(list<ingred> &ingredient_list, list<Recipe> &recipe_list) {
+// 데이터 불러오기
+void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list) {
     vector<vector<string>> contentData;
     vector<vector<string>> ingredientData;
     vector<recipeBuf> otherData;
     ifstream ifs;
     string data_path;
     recipeBuf recipe;
-    ingred ingredient;
+    Ingredient ingredient;
     int fd = 0;
     int rSize = 0;
     int recipeCnt = 0;
@@ -77,8 +80,8 @@ void data_load(list<ingred> &ingredient_list, list<Recipe> &recipe_list) {
     data_path = "./Refrigerator_Data/ingredients.dat";
     fd = open(data_path.c_str(), O_CREAT | O_RDWR, PERMS);
     while (true) {
-        memset(&ingredient, 0x00, sizeof(ingred));
-        rSize = read(fd, &ingredient, sizeof(ingred));
+        memset(&ingredient, 0x00, sizeof(Ingredient));
+        rSize = read(fd, &ingredient, sizeof(Ingredient));
         if (rSize == 0)
             break;
         else
@@ -143,19 +146,15 @@ void data_load(list<ingred> &ingredient_list, list<Recipe> &recipe_list) {
     return;
 }
 
-void data_save(list<ingred> ingredient_list, list<Recipe> recipe_list) {
+// 데이터 저장
+void data_save(list<Ingredient> ingredient_list, list<Recipe> recipe_list) {
     vector<vector<string>> contentData;
     vector<vector<string>> ingredientData;
     vector<recipeBuf> otherData;
-    vector<recipeBuf>::iterator it_data;
-    vector<string>::iterator it_str;
-    list<ingred>::iterator it_ing;
-    list<Recipe>::iterator it_rec;
     ofstream ofs;
-    string data_path;
     int fd = 0;
-    int recipeCnt = 0;
 
+    list<Recipe>::iterator it_rec;
     for (it_rec = recipe_list.begin(); it_rec != recipe_list.end(); ++it_rec) {
         contentData.push_back(it_rec->get_recipe_content());
         ingredientData.push_back(it_rec->get_recipe_ingredient());
@@ -163,22 +162,26 @@ void data_save(list<ingred> ingredient_list, list<Recipe> recipe_list) {
                                       it_rec->get_recipe_difficulty(),
                                       it_rec->get_recipe_time()));
     }
-    recipeCnt = recipe_list.size();
+    int recipeCnt = recipe_list.size();
 
-    data_path = "./Refrigerator_Data/ingredients.dat";
+    string data_path = "./Refrigerator_Data/ingredients.dat";
     fd = open(data_path.c_str(), O_CREAT | O_WRONLY, PERMS);
+    list<Ingredient>::iterator it_ing;
     for (it_ing = ingredient_list.begin(); it_ing != ingredient_list.end();
          ++it_ing)
-        write(fd, &(*it_ing), sizeof(ingred));
+        write(fd, &(*it_ing), sizeof(Ingredient));
     close(fd);
 
     data_path = "./Refrigerator_Data/recipes.dat";
     fd = open(data_path.c_str(), O_CREAT | O_WRONLY, PERMS);
+    vector<recipeBuf>::iterator it_data;
     for (it_data = otherData.begin(); it_data != otherData.end(); ++it_data)
         write(fd, &(*it_data), sizeof(recipeBuf));
     close(fd);
 
     for (int i = 0; i < recipeCnt; ++i) {
+        vector<string>::iterator it_str;
+
         data_path =
             "./Refrigerator_Data/Recipe_Contents/" + to_string(i) + ".txt";
         ofs.open(data_path);

@@ -26,8 +26,8 @@ int show_main() {
         cout << "4. 요리 삭제하기" << endl;
         cout << "5. 재료 보기" << endl;
         cout << "6. 요리 보기" << endl;
-        cout << "7. 요리 하기" << endl;
-        cout << "8. 종료 하기" << endl;
+        cout << "7. 요리하기" << endl;
+        cout << "8. 종료하기" << endl;
         cout << "\n번호를 입력하세요(1~8) : ";
         cin >> menu;
         getchar();
@@ -37,7 +37,7 @@ int show_main() {
 }
 
 // 재료 추가하기.
-void show_1(list<ingred> &ingredient_list) {
+void show_1(list<Ingredient> &ingredient_list) {
     int n;
     string name;
     int date;
@@ -61,7 +61,8 @@ void show_1(list<ingred> &ingredient_list) {
         cout << "재료 수량 입력 (정수 입력): ";
         cin >> quantity;
 
-        ingredient_list.push_back(ingred(name, date, kind, quantity, location));
+        ingredient_list.push_back(
+            Ingredient(name, date, kind, quantity, location));
         printf("%c[32m", 27);
         cout << "\n재료가 추가 되었습니다." << endl;
         printf("%c[0m", 27);
@@ -88,13 +89,13 @@ void show_1(list<ingred> &ingredient_list) {
 }
 
 // 재료 삭제하기.
-void show_2(list<ingred> &ingredient_list) {
+void show_2(list<Ingredient> &ingredient_list) {
     int n;
     string name;
     bool result = false;
     int menu = 0;
 
-    list<ingred>::iterator it_ing;
+    list<Ingredient>::iterator it_ing;
 
     while (true) {
         result = false;
@@ -276,7 +277,7 @@ void show_4(list<Recipe> &recipe_list) {
 }
 
 // 재료 보기.
-void show_5(list<ingred> &ingredient_list) {
+void show_5(list<Ingredient> &ingredient_list) {
     int n;
     int t = 0;
 
@@ -288,7 +289,7 @@ void show_5(list<ingred> &ingredient_list) {
     t += (curr_tm->tm_mon + 1) * 100;
     t += curr_tm->tm_mday;
 
-    list<ingred>::iterator it_ing;
+    list<Ingredient>::iterator it_ing;
 
     while (true) {
         clear();
@@ -334,21 +335,22 @@ void show_5(list<ingred> &ingredient_list) {
 
                 for (it_ing = ingredient_list.begin();
                      it_ing != ingredient_list.end(); it_ing++) {
-                    ingred &contact_1 = *it_ing;
+                    Ingredient &ingredient = *it_ing;
 
-                    if (contact_1.get_ingredient_location() == i) {
-                        cout << "이름 : " << contact_1.get_ingredient_name()
-                             << " / "
-                             << "종류 : " << contact_1.get_ingredient_kind()
-                             << " / "
-                             << "개수 : " << contact_1.get_ingredient_quantity()
-                             << " / "
-                             << "유통기한 : "
-                             << contact_1.get_ingredient_duedate();
-                        if ((contact_1.get_ingredient_duedate() - t) < 0) {
+                    if (ingredient.get_ingredient_location() == i) {
+                        cout
+                            << "이름 : " << ingredient.get_ingredient_name()
+                            << " / "
+                            << "종류 : " << ingredient.get_ingredient_kind()
+                            << " / "
+                            << "개수 : " << ingredient.get_ingredient_quantity()
+                            << " / "
+                            << "유통기한 : "
+                            << ingredient.get_ingredient_duedate();
+                        if ((ingredient.get_ingredient_duedate() - t) < 0) {
                             printf("%c[31m", 27);
                             cout << " (유통기한 지남!!!)";
-                            contact_1.set_ingredient_checkdue(1);
+                            ingredient.set_ingredient_checkdue(1);
                             printf("%c[0m", 27);
                         }
                         cout << endl;
@@ -461,7 +463,8 @@ void show_6(list<Recipe> &recipe_list) {
     }
 }
 
-void show_7(list<ingred> &ingredient_list, const list<Recipe> &recipe_list) {
+void show_7(list<Ingredient> &ingredient_list,
+            const list<Recipe> &recipe_list) {
     int n = 0;
     int i = 1;
     char answer = 0;
@@ -502,8 +505,9 @@ void show_7(list<ingred> &ingredient_list, const list<Recipe> &recipe_list) {
             printf("%c[31m", 27);
             cout << "재료가 부족해 요리를 할 수 없습니다." << endl;
             cout << "부족한 재료: ";
-            for (int i = 0; i < uncookable[n].lacking_ingredients.size(); ++i)
-                cout << uncookable[n].lacking_ingredients[i] << " ";
+            int lackCnt = uncookable[n].get_lacking_ingredients().size();
+            for (int i = 0; i < lackCnt; ++i)
+                cout << uncookable[n].get_lacking_ingredients()[i] << " ";
             printf("%c[0m", 27);
             cout << "\n다른 요리를 선택해 주세요: ";
             continue;
