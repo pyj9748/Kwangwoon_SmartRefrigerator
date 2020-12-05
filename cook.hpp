@@ -7,23 +7,27 @@
 class Cook {
   public:
     Cook();
-    Cook(const list<ingred> &ingredient_list, const list<Recipe> &recipe_list);
+    Cook(const list<Ingredient> &ingredient_list,
+         const list<Recipe> &recipe_list);
 
-    void set_ingredients(const list<ingred> &ingredient_list);
+    void set_ingredients(const list<Ingredient> &ingredient_list);
     void set_entire_recipes(const list<Recipe> &recipe_list);
 
-    void arrange_recipes();
+    void
+    arrange_recipes(); // 전체 레시피를 재료가 충분한 것과 부족한 것으로 분류
     vector<Recipe> get_cookable();
     vector<Recipe> get_uncookable();
 
   private:
-    list<ingred> ingredients;
-    list<Recipe> entire_recipes;
-    vector<Recipe> cookable_recipes;
-    vector<Recipe> uncookable_recipes;
+    list<Ingredient> ingredients;
+    list<Recipe> entire_recipes;       // 전체 레시피
+    vector<Recipe> cookable_recipes;   // 재료가 충분한 레시피
+    vector<Recipe> uncookable_recipes; // 재료가 부족한 레시피
 };
 
-bool is_lack(const string &target, list<ingred> ingredients);
-void use_ingredients(vector<string> using_ingreds, list<ingred> &ingreds);
+// 재료 부족 판별
+bool is_lack(const string &target, list<Ingredient> ingredients);
+// 재료 소모
+void use_ingredients(vector<string> using_ingreds, list<Ingredient> &ingreds);
 
 #endif
