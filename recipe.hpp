@@ -4,6 +4,8 @@
 #include "ingredient.hpp"
 #include <vector>
 
+#define MAX_DATA_LENGTH 32
+
 using namespace std;
 
 class Recipe {
@@ -11,6 +13,7 @@ class Recipe {
     Recipe();
     Recipe(string name, vector<string> content,
            vector<string> list_for_ingerdient, string difficulty, int time);
+
     string get_recipe_name();
     vector<string> get_recipe_content();
     vector<string> get_recipe_ingredient();
@@ -32,4 +35,5 @@ class Recipe {
     string recipe_difficulty;              // 난이도
     int recipe_time;                       // 조리 시간
 };
+
 #endif

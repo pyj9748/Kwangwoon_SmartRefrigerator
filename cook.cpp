@@ -49,8 +49,7 @@ vector<Recipe> Cook::get_uncookable() { return uncookable_recipes; }
 bool is_lack(const string &target, list<ingred> ingredients) {
     list<ingred>::iterator iter;
     for (iter = ingredients.begin(); iter != ingredients.end(); ++iter) {
-        ingred ingredient = *iter;
-        if (ingredient.get_ingredient_name() == target)
+        if (iter->get_ingredient_name() == target)
             return false;
     }
     return true;
@@ -64,11 +63,10 @@ void use_ingredients(vector<string> using_ingreds, list<ingred> &ingreds) {
 
     for (it_use = using_ingreds.begin(); it_use != using_ingreds.end();
          ++it_use) {
-        using_ingred = *it_use;
         for (it_ingred = ingreds.begin(); it_ingred != ingreds.end();
              ++it_ingred) {
             modifying = *it_ingred;
-            if (modifying.get_ingredient_name() == using_ingred)
+            if (modifying.get_ingredient_name() == *it_use)
                 break;
         }
         ingreds.erase(it_ingred);
