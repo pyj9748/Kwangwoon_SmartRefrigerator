@@ -20,8 +20,8 @@ void data_save();
 
 void signalHandler(int signum);
 
-list<Ingredient> ingredient_list;
-list<Recipe> recipe_list;
+list<Ingredient> ingredient_list; // 보유중인 재료 목록
+list<Recipe> recipe_list;         // 레시피 목록
 
 int main() {
 
@@ -84,7 +84,7 @@ void data_load() {
     mkdir("./Refrigerator_Data/Recipe_Ingredients", PERMS);
 
     data_path = "./Refrigerator_Data/ingredients.dat";
-    fd = open(data_path.c_str(), O_CREAT | O_RDWR, PERMS);
+    fd = open(data_path.c_str(), O_CREAT | O_RDONLY, PERMS);
     while (true) {
         memset(&ingredient, 0x00, sizeof(Ingredient));
         rSize = read(fd, &ingredient, sizeof(Ingredient));
@@ -96,7 +96,7 @@ void data_load() {
     close(fd);
 
     data_path = "./Refrigerator_Data/recipes.dat";
-    fd = open(data_path.c_str(), O_CREAT | O_RDWR, PERMS);
+    fd = open(data_path.c_str(), O_CREAT | O_RDONLY, PERMS);
     while (true) {
         memset(&recipe, 0x00, sizeof(recipeBuf));
         rSize = read(fd, &recipe, sizeof(recipeBuf));
