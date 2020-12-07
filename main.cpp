@@ -3,6 +3,7 @@
 #include <cstring>
 #include <fcntl.h>
 #include <fstream>
+#include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -13,15 +14,20 @@
 using namespace std;
 
 // 데이터 불러오기
-void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list);
+void data_load();
 // 데이터 저장
-void data_save(list<Ingredient> ingredient_list, list<Recipe> recipe_list);
+void data_save();
+
+void signalHandler(int signum);
+
+list<Ingredient> ingredient_list; // 보유중인 재료 목록
+list<Recipe> recipe_list;         // 레시피 목록
 
 int main() {
-    list<Ingredient> ingredient_list;
-    list<Recipe> recipe_list;
 
-    data_load(ingredient_list, recipe_list);
+    signal(SIGINT, signalHandler);
+
+    data_load();
 
     int menu = 0;
 
@@ -52,7 +58,7 @@ int main() {
             break;
         case 8: // 프로그램 종료
             clear();
-            data_save(ingredient_list, recipe_list);
+            data_save();
             return 0;
         default:
             continue;
@@ -61,7 +67,7 @@ int main() {
 }
 
 // 데이터 불러오기
-void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list) {
+void data_load() {
     vector<vector<string>> contentData;
     vector<vector<string>> ingredientData;
     vector<recipeBuf> otherData;
@@ -78,7 +84,7 @@ void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list) {
     mkdir("./Refrigerator_Data/Recipe_Ingredients", PERMS);
 
     data_path = "./Refrigerator_Data/ingredients.dat";
-    fd = open(data_path.c_str(), O_CREAT | O_RDWR, PERMS);
+    fd = open(data_path.c_str(), O_CREAT | O_RDONLY, PERMS);
     while (true) {
         memset(&ingredient, 0x00, sizeof(Ingredient));
         rSize = read(fd, &ingredient, sizeof(Ingredient));
@@ -90,7 +96,7 @@ void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list) {
     close(fd);
 
     data_path = "./Refrigerator_Data/recipes.dat";
-    fd = open(data_path.c_str(), O_CREAT | O_RDWR, PERMS);
+    fd = open(data_path.c_str(), O_CREAT | O_RDONLY, PERMS);
     while (true) {
         memset(&recipe, 0x00, sizeof(recipeBuf));
         rSize = read(fd, &recipe, sizeof(recipeBuf));
@@ -147,7 +153,7 @@ void data_load(list<Ingredient> &ingredient_list, list<Recipe> &recipe_list) {
 }
 
 // 데이터 저장
-void data_save(list<Ingredient> ingredient_list, list<Recipe> recipe_list) {
+void data_save() {
     vector<vector<string>> contentData;
     vector<vector<string>> ingredientData;
     vector<recipeBuf> otherData;
@@ -204,4 +210,11 @@ void data_save(list<Ingredient> ingredient_list, list<Recipe> recipe_list) {
     ofs << recipeCnt << endl;
     ofs.close();
     return;
+}
+
+void signalHandler(int signum) {
+    if (signum == SIGINT) {
+        data_save();
+        exit(0);
+    }
 }
