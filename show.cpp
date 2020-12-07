@@ -370,10 +370,12 @@ void show_5(list<Ingredient> &ingredient_list) {
                 if (n == 0)
                     return;
                 else if (n == 1) {
-                    for (it_ing = ingredient_list.begin();
-                         it_ing != ingredient_list.end(); it_ing++) {
+                    it_ing = ingredient_list.begin();
+                    while (it_ing != ingredient_list.end()) {
                         if (it_ing->get_ingredient_checkdue() == 1)
                             it_ing = ingredient_list.erase(it_ing);
+                        else
+                            ++it_ing;
                     }
                     return;
                 } else {
