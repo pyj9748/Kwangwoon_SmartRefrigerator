@@ -171,7 +171,7 @@ void data_save() {
     int recipeCnt = recipe_list.size();
 
     string data_path = "./Refrigerator_Data/ingredients.dat";
-    fd = open(data_path.c_str(), O_CREAT | O_WRONLY, PERMS);
+    fd = open(data_path.c_str(), O_CREAT | O_TRUNC | O_WRONLY, PERMS);
     list<Ingredient>::iterator it_ing;
     for (it_ing = ingredient_list.begin(); it_ing != ingredient_list.end();
          ++it_ing)
@@ -179,7 +179,7 @@ void data_save() {
     close(fd);
 
     data_path = "./Refrigerator_Data/recipes.dat";
-    fd = open(data_path.c_str(), O_CREAT | O_WRONLY, PERMS);
+    fd = open(data_path.c_str(), O_CREAT | O_TRUNC | O_WRONLY, PERMS);
     vector<recipeBuf>::iterator it_data;
     for (it_data = otherData.begin(); it_data != otherData.end(); ++it_data)
         write(fd, &(*it_data), sizeof(recipeBuf));
